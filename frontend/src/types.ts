@@ -31,7 +31,7 @@ export enum AppState {
 
 export interface CodeGenerationParams {
   generationType: "create" | "update";
-  image: string;
+  images: string[];
   resultImage?: string;
   history?: string[];
   isImportedFromCode?: boolean;

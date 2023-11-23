@@ -221,7 +221,7 @@ function App() {
       doGenerateCode(
         {
           generationType: "create",
-          image: referenceImages[0],
+          images: referenceImages,
         },
         currentVersion
       );
@@ -254,7 +254,7 @@ function App() {
       doGenerateCode(
         {
           generationType: "update",
-          image: referenceImages[0],
+          images: referenceImages,
           resultImage: resultImage,
           history: updatedHistory,
           isImportedFromCode,
@@ -265,7 +265,7 @@ function App() {
       doGenerateCode(
         {
           generationType: "update",
-          image: referenceImages[0],
+          images: referenceImages,
           history: updatedHistory,
           isImportedFromCode,
         },
