@@ -150,11 +150,11 @@ async def stream_code(websocket: WebSocket):
         try:
             if params.get("resultImage") and params["resultImage"]:
                 prompt_messages = assemble_prompt(
-                    params["image"], generated_code_config, params["resultImage"]
+                    params["images"], generated_code_config, params["resultImage"]
                 )
             else:
                 prompt_messages = assemble_prompt(
-                    params["image"], generated_code_config
+                    params["images"], generated_code_config
                 )
         except:
             await websocket.send_json(

@@ -17,7 +17,7 @@ from screenshot_system_prompts import (
 
 
 USER_PROMPT = """
-Generate code for a web page that looks exactly like this.
+Generate code for a web page that looks exactly like these images. Seperate them into different sectionsif multiple images are provided.
 """
 
 
@@ -50,7 +50,7 @@ def assemble_imported_code_prompt(
 
 
 def assemble_prompt(
-    image_data_url: str,
+    images: List[str],
     generated_code_config: str,
     result_image_data_url: Union[str, None] = None,
 ) -> List[ChatCompletionMessageParam]:
@@ -67,31 +67,30 @@ def assemble_prompt(
     else:
         raise Exception("Code config is not one of available options")
 
-    user_content: List[ChatCompletionContentPartParam] = [
-        {
+    user_content: List[ChatCompletionContentPartParam]= []
+    for image_data_url in images:
+        user_content.append(
+            {
+                "type": "image_url",
+                "image_url": {"url": image_data_url, "detail": "high"},
+            },
+        )
+
+    if result_image_data_url:
+        user_content.insert(1, {
             "type": "image_url",
-            "image_url": {"url": image_data_url, "detail": "high"},
-        },
+            "image_url": {"url": result_image_data_url, "detail": "high"},
+        })
+
+    user_content.append(
         {
             "type": "text",
             "text": USER_PROMPT,
-        },
-    ]
+        }
+    )
 
-    # Include the result image if it exists
-    if result_image_data_url:
-        user_content.insert(
-            1,
-            {
-                "type": "image_url",
-                "image_url": {"url": result_image_data_url, "detail": "high"},
-            },
-        )
     return [
-        {
-            "role": "system",
-            "content": system_content,
-        },
+        {"role": "system", "content": system_content},
         {
             "role": "user",
             "content": user_content,

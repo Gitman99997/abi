@@ -221,7 +221,7 @@ function App() {
       doGenerateCode(
         {
           generationType: "create",
-          image: referenceImages[0],
+          images: referenceImages,
         },
         currentVersion
       );
@@ -254,7 +254,7 @@ function App() {
       doGenerateCode(
         {
           generationType: "update",
-          image: referenceImages[0],
+          images: referenceImages,
           resultImage: resultImage,
           history: updatedHistory,
           isImportedFromCode,
@@ -265,7 +265,7 @@ function App() {
       doGenerateCode(
         {
           generationType: "update",
-          image: referenceImages[0],
+          images: referenceImages,
           history: updatedHistory,
           isImportedFromCode,
         },
@@ -414,24 +414,34 @@ function App() {
 
               {/* Reference image display */}
               <div className="flex gap-x-2 mt-2">
-                {referenceImages.length > 0 && (
-                  <div className="flex flex-col">
-                    <div
-                      className={classNames({
-                        "scanning relative": appState === AppState.CODING,
-                      })}
-                    >
+                <div className="flex flex-col">
+                  <div
+                    className={classNames({
+                      "scanning relative": appState === AppState.CODING,
+                    })}
+                  >
+                    {referenceImages.length > 1 ? (
+                      <div className="grid grid-cols-2 gap-2">
+                        {referenceImages.map((image, i) => (
+                          <img
+                            className="border max-h-40 w-full h-full object-contain border-gray-200 rounded-md"
+                            src={image}
+                            alt={`Reference image: ${i}`}
+                          />
+                        ))}
+                      </div>
+                    ) : (
                       <img
                         className="w-[340px] border border-gray-200 rounded-md"
                         src={referenceImages[0]}
-                        alt="Reference"
+                        alt-="Reference Image"
                       />
-                    </div>
-                    <div className="text-gray-400 uppercase text-sm text-center mt-1">
-                      Original Screenshot
-                    </div>
+                    )}
                   </div>
-                )}
+                  <div className="text-gray-400 uppercase text-sm text-center mt-1">
+                    Original Screenshot{referenceImages.length > 1 ? "s" : ""}
+                  </div>
+                </div>
                 <div className="bg-gray-400 px-4 py-2 rounded text-sm hidden">
                   <h2 className="text-lg mb-4 border-b border-gray-800">
                     Console
